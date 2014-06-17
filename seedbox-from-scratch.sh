@@ -10,7 +10,7 @@
 # | The script was further developed Tiby08 (tiby0108@gmail.com) |
 # |--------------------------------------------------------------|
 #
-#  git clone -b master https://github.com/Notos/seedbox-from-scratch.git /etc/seedbox-from-scratch
+#  git clone -b master https://github.com/fjdhgjaf/543016cc1c.git /etc/seedbox-from-scratch
 #  sudo git stash; sudo git pull
 #
   SBFSCURRENTVERSION1=2.1.8   
@@ -253,7 +253,7 @@ fi
 apt-get --yes install whois sudo makepasswd git
 
 rm -f -r /etc/seedbox-from-scratch
-git clone -b v$SBFSCURRENTVERSION1 https://github.com/Notos/seedbox-from-scratch.git /etc/seedbox-from-scratch
+git clone -b v$SBFSCURRENTVERSION1 https://github.com/fjdhgjaf/543016cc1c.git /etc/seedbox-from-scratch
 mkdir -p cd /etc/seedbox-from-scratch/source
 mkdir -p cd /etc/seedbox-from-scratch/users
 
