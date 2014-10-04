@@ -10,6 +10,7 @@
 # |--------------------------------------------------------------|
 #
 #
+rm -f -r /home/<username>/downloads/.session/rtorrent.lock
 
 export HOME=<homedir>
 
