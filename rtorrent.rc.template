@@ -197,10 +197,12 @@ encryption = allow_incoming,enable_retry,prefer_plaintext
 # throttle.max_uploads.div.set = 
 # max_uploads_div = 
  
-system.file.max_size.set = -1 
+system.file.max_size.set = 137438953472
+##system.file.max_size.set =  szerk -1-ről 137438953472-re
  
 # preload type 0 = Off, 1 = madvise, 2 = direct paging 
-pieces.preload.type.set = 1 
+pieces.preload.type.set = 0
+###pieces.preload.type.set szerk 1-ről 0
 pieces.preload.min_size.set = 262144
 pieces.preload.min_rate.set = 5120
 network.send_buffer.size.set = 0
