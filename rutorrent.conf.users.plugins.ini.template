@@ -42,35 +42,35 @@ enabled = yes
 enabled = no
 
 [create]
-enabled = user-defined
+enabled = no
 
 [datadir]
 enabled = yes
 
 [diskspace]
-enabled = user-defined
+enabled = yes
 
 [erasedata]
-enabled = user-defined
+enabled = yes
 
 [show_peers_like_wtorrent]
-enabled = user-defined
+enabled = yes
 
 [theme]
 enabled = yes
 
 [tracklabels]
-enabled = user-defined
+enabled = yes
 
 [trafic]
-enabled = user-defined
+enabled = yes
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Enabled
 
 [autotools]
-enabled = user-defined
+enabled = yes
 [cookies]
-enabled = user-defined
+enabled = no
 [data]
 enabled = user-defined
 [edit]
@@ -80,7 +80,7 @@ enabled = user-defined
 [extsearch]
 enabled = user-defined
 [filedrop]
-enabled = user-defined
+enabled = no
 [geoip]
 enabled = user-defined
 [httprpc]
@@ -101,7 +101,7 @@ enabled = user-defined
 [titlebar]
 enabled = user-defined
 [unpack]
-enabled = user-defined
+enabled = no
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Disabled
 
@@ -133,7 +133,7 @@ enabled = no
 enabled = no
 
 [mediainfo]
-enabled = yes
+enabled = no
 
 [check_port]
 enabled = no
@@ -154,7 +154,7 @@ enabled = no
 enabled = no
 
 [screenshots]
-enabled = yes
+enabled = no
 
 [seedingtime]
 enabled = yes
@@ -169,3 +169,6 @@ enabled = yes
 ;;[mediastream]
 ;;enabled = yes
 
+
+[autodl-irssi]
+enabled = no
