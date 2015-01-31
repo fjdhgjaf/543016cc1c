@@ -127,18 +127,17 @@ else
   getString YES "ruTorrent jelszó $NEWUSER1: " PASSWORD1
 fi
 
-USERHASSSHACCESS1=NO
-#if [ $3 ]
-#then
-#  if [ "$3" == "YES" ] || [ "$3" == "NO" ]; then
-#    USERHASSSHACCESS1=$3
-#    USERHASSSHACCESS2=$3
-#  else
-#    getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
-#  fi
-#else
-#  getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
-#fi
+if [ $3 ]
+then
+  if [ "$3" == "YES" ] || [ "$3" == "NO" ]; then
+    USERHASSSHACCESS1=$3
+    USERHASSSHACCESS2=$3
+  else
+    getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
+  fi
+else
+  getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
+fi
 
 CHROOTJAIL1=NO
 #if [ -f /etc/jailkit/jk_init.ini ] && [ "$USERHASSSHACCESS1" == "YES" ]; then
@@ -157,18 +156,21 @@ CHROOTJAIL1=NO
 #  CHROOTJAIL1=NO
 #fi
 
-USERINSUDOERS1=NO
-#if [ $5 ]
-#then
-#  if [ "$5" == "YES" ] || [ "$5" == "NO" ]; then
-#    USERINSUDOERS1=$5
-#    USERINSUDOERS2=$5
-#  else
-#    getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
-#  fi
-#else
-#  getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
-#fi
+if [ $5 ]
+then
+  if [ "$5" == "YES" ] || [ "$5" == "NO" ]; then
+    USERINSUDOERS1=$5
+    USERINSUDOERS2=$5
+  else
+    getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
+  fi
+else
+  getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
+fi
+
+if [ "$CHROOTJAIL1" == "NO" ] && [ "$USERINSUDOERS1" == "YES" ]; then
+  echo "$NEWUSER1" | sudo tee -a /etc/vsftpd.chroot_list &> /dev/null
+fi
 
 if [ "$CHROOTJAIL1" == "NO" ] && [ "$USERINSUDOERS1" == "YES" ]; then
   echo "$NEWUSER1" | sudo tee -a /etc/vsftpd.chroot_list &> /dev/null
@@ -455,15 +457,14 @@ fi
 #        ---- what/forums.php?action=viewthread&threadid=151523
 #        ---- commit log: https://github.com/autodl-irssi-community/autodl-irssi/commits/master
 
-### IRSSI kivéve
-### sudo rm -R $HOMEJAILED1/.irssi
-### sudo git clone https://github.com/autodl-irssi-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
-### sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
-### cd $HOMEJAILED1/.irssi/scripts
-### sudo cp autodl-irssi.pl autorun/
-### sudo mkdir -p $HOMEJAILED1/.autodl
-### sudo touch $HOMEJAILED1/.autodl/autodl.cfg
-### sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
+sudo rm -R $HOMEJAILED1/.irssi
+sudo git clone https://github.com/autodl-irssi-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
+sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
+cd $HOMEJAILED1/.irssi/scripts
+sudo cp autodl-irssi.pl autorun/
+sudo mkdir -p $HOMEJAILED1/.autodl
+sudo touch $HOMEJAILED1/.autodl/autodl.cfg
+sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
 
 # 29.3
 
