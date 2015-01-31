@@ -117,27 +117,28 @@ if [ $1 ]; then
   NEWUSER1=$1
   NEWUSER2=$1
 else
-  getString NO  "Username for your seedbox user: " NEWUSER1
+  getString NO  "Felhasználónév: " NEWUSER1
 fi
 
 if [ $2 ]; then
   PASSWORD1=$2
   PASSWORD2=$2
 else
-  getString YES "ruTorrent password for user $NEWUSER1: " PASSWORD1
+  getString YES "ruTorrent jelszó $NEWUSER1: " PASSWORD1
 fi
 
-if [ $3 ]
-then
-  if [ "$3" == "YES" ] || [ "$3" == "NO" ]; then
-    USERHASSSHACCESS1=$3
-    USERHASSSHACCESS2=$3
-  else
-    getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
-  fi
-else
-  getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
-fi
+USERHASSSHACCESS1=NO
+#if [ $3 ]
+#then
+#  if [ "$3" == "YES" ] || [ "$3" == "NO" ]; then
+#    USERHASSSHACCESS1=$3
+#    USERHASSSHACCESS2=$3
+#  else
+#    getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
+#  fi
+#else
+#  getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
+#fi
 
 CHROOTJAIL1=NO
 #if [ -f /etc/jailkit/jk_init.ini ] && [ "$USERHASSSHACCESS1" == "YES" ]; then
@@ -156,17 +157,18 @@ CHROOTJAIL1=NO
 #  CHROOTJAIL1=NO
 #fi
 
-if [ $5 ]
-then
-  if [ "$5" == "YES" ] || [ "$5" == "NO" ]; then
-    USERINSUDOERS1=$5
-    USERINSUDOERS2=$5
-  else
-    getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
-  fi
-else
-  getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
-fi
+USERINSUDOERS1=NO
+#if [ $5 ]
+#then
+#  if [ "$5" == "YES" ] || [ "$5" == "NO" ]; then
+#    USERINSUDOERS1=$5
+#    USERINSUDOERS2=$5
+#  else
+#    getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
+#  fi
+#else
+#  getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
+#fi
 
 if [ "$CHROOTJAIL1" == "NO" ] && [ "$USERINSUDOERS1" == "YES" ]; then
   echo "$NEWUSER1" | sudo tee -a /etc/vsftpd.chroot_list &> /dev/null
@@ -448,34 +450,20 @@ if [ -f /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]; then
   sudo chown -R $NEWUSER1: $HOMEJAILED1/downloads
 fi
 
-# 29.1 ---- Main Trunk of AutodlIrssi ---- Not maintained by developers anymore
-
-#sudo rm -R $HOMEJAILED1/.irssi
-#sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
-#cd $HOMEJAILED1/.irssi/scripts
-#sudo wget --no-check-certificate -O autodl-irssi.zip https://sourceforge.net/projects/autodl-irssi/files/autodl-irssi-v1.31.zip/download
-#sudo unzip -o autodl-irssi.zip
-#sudo rm autodl-irssi.zip
-#sudo cp autodl-irssi.pl autorun/
-#sudo mkdir -p $HOMEJAILED1/.autodl
-#sudo touch $HOMEJAILED1/.autodl/autodl.cfg
-#sudo mv $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers.original
-#sudo unzip /etc/seedbox-from-scratch/autodl-trackers.zip -d $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers/
-#sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers
-
 # 29.2   ---- New Trunk of AutodlIrssi ---- by thebigmunch
 #        ---- Based on https://github.com/autodl-irssi-community/autodl-irssi
 #        ---- what/forums.php?action=viewthread&threadid=151523
 #        ---- commit log: https://github.com/autodl-irssi-community/autodl-irssi/commits/master
 
-sudo rm -R $HOMEJAILED1/.irssi
-sudo git clone https://github.com/autodl-irssi-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
-sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
-cd $HOMEJAILED1/.irssi/scripts
-sudo cp autodl-irssi.pl autorun/
-sudo mkdir -p $HOMEJAILED1/.autodl
-sudo touch $HOMEJAILED1/.autodl/autodl.cfg
-sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
+### IRSSI kivéve
+### sudo rm -R $HOMEJAILED1/.irssi
+### sudo git clone https://github.com/autodl-irssi-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
+### sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
+### cd $HOMEJAILED1/.irssi/scripts
+### sudo cp autodl-irssi.pl autorun/
+### sudo mkdir -p $HOMEJAILED1/.autodl
+### sudo touch $HOMEJAILED1/.autodl/autodl.cfg
+### sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
 
 # 29.3
 
@@ -506,8 +494,8 @@ echo "https://$IPADDRESS1/seedboxInfo.php" | sudo tee -a /etc/seedbox-from-scrat
 echo "" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "User personal info" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "-------------------" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Username: $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Password: $PASSWORD1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Felhasználónév: $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Jelszó: $PASSWORD1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "RPC: $NEWRPC1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "IRSSI Password: $IRSSIPASSWORD1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "SSH: $USERHASSSHACCESS1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
