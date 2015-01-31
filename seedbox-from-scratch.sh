@@ -423,6 +423,9 @@ echo "" | tee -a /etc/apache2/apache2.conf > /dev/null
 echo "ServerSignature Off" | tee -a /etc/apache2/apache2.conf > /dev/null
 echo "ServerTokens Prod" | tee -a /etc/apache2/apache2.conf > /dev/null
 echo "Timeout 30" | tee -a /etc/apache2/apache2.conf > /dev/null
+#########BELESZERK
+apt-get --yes install libapache2-mod-scgi
+a2enmod scgi
 
 service apache2 restart
 
@@ -519,21 +522,22 @@ make -j2
 make install
 ldconfig
 
-# 22.
+# 22. rutorrent csere
 cd /var/www
 rm -f -r rutorrent
-svn checkout http://rutorrent.googlecode.com/svn/trunk/rutorrent
-svn checkout http://rutorrent.googlecode.com/svn/trunk/plugins
 rm -r -f rutorrent/plugins
-mv plugins rutorrent/
+wget -N http://bestbox.be/rutorrent.tar.gz --no-check-certificate
+tar xvfz rutorrent.tar.gz -C /var/www/
+chown -R www-data:www-data /var/www/rutorrent/
+chmod -R 755 /var/www/rutorrent/
 
-cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
+##cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
 
 groupadd admin
 
 echo "www-data ALL=(root) NOPASSWD: /usr/sbin/repquota" | tee -a /etc/sudoers > /dev/null
 
-cp /etc/seedbox-from-scratch/favicon.ico /var/www/
+##cp /etc/seedbox-from-scratch/favicon.ico /var/www/
 
 # 26.
 cd /tmp
@@ -573,18 +577,18 @@ bash /etc/seedbox-from-scratch/updatejkinit
 
 # Installing Filemanager and MediaStream
 
-rm -f -R /var/www/rutorrent/plugins/filemanager
-rm -f -R /var/www/rutorrent/plugins/fileupload
-rm -f -R /var/www/rutorrent/plugins/mediastream
-rm -f -R /var/www/stream
+##rm -f -R /var/www/rutorrent/plugins/filemanager
+####rm -f -R /var/www/rutorrent/plugins/fileupload
+##rm -f -R /var/www/rutorrent/plugins/mediastream
+##rm -f -R /var/www/stream
 
-cd /var/www/rutorrent/plugins/
-svn co http://svn.rutorrent.org/svn/filemanager/trunk/mediastream
+##cd /var/www/rutorrent/plugins/
+##svn co http://svn.rutorrent.org/svn/filemanager/trunk/mediastream
 
-cd /var/www/rutorrent/plugins/
-svn co http://svn.rutorrent.org/svn/filemanager/trunk/filemanager
+##cd /var/www/rutorrent/plugins/
+###svn co http://svn.rutorrent.org/svn/filemanager/trunk/filemanager
 
-cp /etc/seedbox-from-scratch/rutorrent.plugins.filemanager.conf.php.template /var/www/rutorrent/plugins/filemanager/conf.php
+##cp /etc/seedbox-from-scratch/rutorrent.plugins.filemanager.conf.php.template /var/www/rutorrent/plugins/filemanager/conf.php
 
 mkdir -p /var/www/stream/
 ln -s /var/www/rutorrent/plugins/mediastream/view.php /var/www/stream/view.php
@@ -594,12 +598,12 @@ chown www-data: /var/www/stream/view.php
 echo "<?php \$streampath = 'http://$IPADDRESS1/stream/view.php'; ?>" | tee /var/www/rutorrent/plugins/mediastream/conf.php > /dev/null
 
 # 32.2 # FILEUPLOAD
-cd /var/www/rutorrent/plugins/
-svn co http://svn.rutorrent.org/svn/filemanager/trunk/fileupload
-chmod 775 /var/www/rutorrent/plugins/fileupload/scripts/upload
-wget -O /tmp/plowshare.deb http://plowshare.googlecode.com/files/plowshare_1~git20120930-1_all.deb
-dpkg -i /tmp/plowshare.deb
-apt-get --yes -f install
+##cd /var/www/rutorrent/plugins/
+##svn co http://svn.rutorrent.org/svn/filemanager/trunk/fileupload
+##chmod 775 /var/www/rutorrent/plugins/fileupload/scripts/upload
+###wget -O /tmp/plowshare.deb http://plowshare.googlecode.com/files/plowshare_1~git20120930-1_all.deb
+###dpkg -i /tmp/plowshare.deb
+###apt-get --yes -f install
 
 # 32.2
 chown -R www-data:www-data /var/www/rutorrent
@@ -607,9 +611,9 @@ chmod -R 755 /var/www/rutorrent
 
 #32.3
 
-perl -pi -e "s/\\\$topDirectory\, \\\$fm/\\\$homeDirectory\, \\\$topDirectory\, \\\$fm/g" /var/www/rutorrent/plugins/filemanager/flm.class.php
-perl -pi -e "s/\\\$this\-\>userdir \= addslash\(\\\$topDirectory\)\;/\\\$this\-\>userdir \= \\\$homeDirectory \? addslash\(\\\$homeDirectory\) \: addslash\(\\\$topDirectory\)\;/g" /var/www/rutorrent/plugins/filemanager/flm.class.php
-perl -pi -e "s/\\\$topDirectory/\\\$homeDirectory/g" /var/www/rutorrent/plugins/filemanager/settings.js.php
+##perl -pi -e "s/\\\$topDirectory\, \\\$fm/\\\$homeDirectory\, \\\$topDirectory\, \\\$fm/g" /var/www/rutorrent/plugins/filemanager/flm.class.php
+##perl -pi -e "s/\\\$this\-\>userdir \= addslash\(\\\$topDirectory\)\;/\\\$this\-\>userdir \= \\\$homeDirectory \? addslash\(\\\$homeDirectory\) \: addslash\(\\\$topDirectory\)\;/g" /var/www/rutorrent/plugins/filemanager/flm.class.php
+##perl -pi -e "s/\\\$topDirectory/\\\$homeDirectory/g" /var/www/rutorrent/plugins/filemanager/settings.js.php
 
 #32.4
 ### unzip /etc/seedbox-from-scratch/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
@@ -624,16 +628,16 @@ ln -s /etc/seedbox-from-scratch/seedboxInfo.php.template /var/www/seedboxInfo.ph
 
 # 32.5
 
-cd /var/www/rutorrent/plugins/
-rm -r /var/www/rutorrent/plugins/fileshare
-rm -r /var/www/share
-svn co http://svn.rutorrent.org/svn/filemanager/trunk/fileshare
-mkdir /var/www/share
-ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/share.php
-ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/index.php
-chown -R www-data:www-data /var/www/share
-cp /etc/seedbox-from-scratch/rutorrent.plugins.fileshare.conf.php.template /var/www/rutorrent/plugins/fileshare/conf.php
-perl -pi -e "s/<servername>/$IPADDRESS1/g" /var/www/rutorrent/plugins/fileshare/conf.php
+##cd /var/www/rutorrent/plugins/
+##rm -r /var/www/rutorrent/plugins/fileshare
+##rm -r /var/www/share
+##svn co http://svn.rutorrent.org/svn/filemanager/trunk/fileshare
+##mkdir /var/www/share
+###ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/share.php
+###ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/index.php
+######chown -R www-data:www-data /var/www/share
+###cp /etc/seedbox-from-scratch/rutorrent.plugins.fileshare.conf.php.template /var/www/rutorrent/plugins/fileshare/conf.php
+###perl -pi -e "s/<servername>/$IPADDRESS1/g" /var/www/rutorrent/plugins/fileshare/conf.php
 
 # 33.
 
@@ -676,6 +680,13 @@ bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES NO YES
 
 clear
 
+# 99.
+apt-get --yes install proftpd
+clear
+
+
+
+
 echo "#"
 echo "# |------------------------------------------------------------|"
 echo "# | The script thank you for Notos (notos.korsan@gmail.com)    |"
@@ -691,8 +702,6 @@ echo "System will reboot now, but don't close this window until you take note of
 echo ""
 echo ""
 echo ""
-
-# 99.
 
 reboot
 
