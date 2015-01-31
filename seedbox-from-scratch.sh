@@ -684,7 +684,9 @@ clear
 apt-get --yes install proftpd
 clear
 
-
+cp /etc/seedbox-from-scratch/createSeedboxUser /usr/bin/createSeedboxUser
+cp /etc/seedbox-from-scratch/changeUserPassword /usr/bin/changeUserPassword
+cp /etc/seedbox-from-scratch/deleteSeedboxUser /usr/bin/deleteSeedboxUser
 
 
 echo "#"
