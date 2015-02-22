@@ -272,8 +272,8 @@ set -x verbose
 # 4.
 #perl -pi -e "s/Port 22/Port $NEWSSHPORT1/g" /etc/ssh/sshd_config
 #perl -pi -e "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
-#perl -pi -e "s/#Protocol 2/Protocol 2/g" /etc/ssh/sshd_config
-#perl -pi -e "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
+perl -pi -e "s/#Protocol 2/Protocol 2/g" /etc/ssh/sshd_config
+perl -pi -e "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
 
 groupadd sshdusers
 echo "" | tee -a /etc/ssh/sshd_config > /dev/null
@@ -301,8 +301,8 @@ apt-get --yes upgrade
 # 8.
 #install all needed packages
 
-apt-get --yes build-dep znc
-apt-get --yes install apache2 apache2-utils autoconf build-essential ca-certificates comerr-dev curl cfv quota mktorrent dtach htop irssi libapache2-mod-php5 libcloog-ppl-dev libcppunit-dev libcurl3 libcurl4-openssl-dev libncurses5-dev libterm-readline-gnu-perl libsigc++-2.0-dev libperl-dev openvpn libssl-dev libtool libxml2-dev ncurses-base ncurses-term ntp openssl patch libc-ares-dev pkg-config php5 php5-cli php5-dev php5-curl php5-geoip php5-mcrypt php5-gd php5-xmlrpc pkg-config python-scgi screen ssl-cert subversion texinfo unzip zlib1g-dev expect joe automake1.9 flex bison debhelper binutils-gold ffmpeg libarchive-zip-perl libnet-ssleay-perl libhtml-parser-perl libxml-libxml-perl libjson-perl libjson-xs-perl libxml-libxslt-perl libxml-libxml-perl libjson-rpc-perl libarchive-zip-perl znc tcpdump
+##apt-get --yes build-dep znc
+apt-get --yes install apache2 apache2-utils autoconf build-essential ca-certificates comerr-dev curl cfv quota mktorrent dtach htop irssi libapache2-mod-php5 libcloog-ppl-dev libcppunit-dev libcurl3 libcurl4-openssl-dev libncurses5-dev libterm-readline-gnu-perl libsigc++-2.0-dev libperl-dev libssl-dev libtool libxml2-dev ncurses-base ncurses-term ntp openssl patch libc-ares-dev pkg-config php5 php5-cli php5-dev php5-curl php5-geoip php5-mcrypt php5-gd php5-xmlrpc pkg-config python-scgi screen ssl-cert subversion texinfo unzip zlib1g-dev expect joe automake1.9 flex bison debhelper binutils-gold ffmpeg libarchive-zip-perl libnet-ssleay-perl libhtml-parser-perl libxml-libxml-perl libjson-perl libjson-xs-perl libxml-libxslt-perl libxml-libxml-perl libjson-rpc-perl libarchive-zip-perl tcpdump
 if [ $? -gt 0 ]; then
   set +x verbose
   echo
@@ -504,23 +504,27 @@ unzip ../xmlrpc-c-1.31.06.zip
 #cd xmlrpc-c-1.16.42 ### old, but stable, version, needs a missing old types.h file
 #ln -s /usr/include/curl/curl.h /usr/include/curl/types.h
 cd xmlrpc-c-1.31.06
-./configure --prefix=/usr --enable-libxml2-backend --disable-libwww-client --disable-wininet-client --disable-abyss-server --disable-cgi-server
-make
-make install
+##./configure --prefix=/usr --enable-libxml2-backend --disable-libwww-client --disable-wininet-client --disable-abyss-server --disable-cgi-server
+./configure --libdir=/usr/local/lib --disable-cplusplus --disable-libwww-client --disable-wininet-client --disable-cgi-server --enable-libxml2-backend 
+make -j 8 && make install
 
 # 17.
 cd ../libtorrent-$LIBTORRENT1
 ./autogen.sh
-./configure --prefix=/usr
-make -j2
-make install
+##./configure --prefix=/usr
+./configure --libdir=/usr/local/lib --disable-debug --with-posix-fallocate --enable-ipv6 --enable-arch=native --with-address-space=4096
+make -j 8 && make install
 
 cd ../rtorrent-$RTORRENT1
 ./autogen.sh
-./configure --prefix=/usr --with-xmlrpc-c
-make -j2
-make install
+##./configure --prefix=/usr --with-xmlrpc-c
+/configure --libdir=/usr/local/lib --disable-debug --with-xmlrpc-c --with-ncurses --enable-ipv6 --enable-arch=native
+make -j 8 && make install
 ldconfig
+
+##hozzaadva
+apt-get --yes install iotop
+apt-get --yes install htop
 
 # 22. rutorrent csere
 cd /var/www
