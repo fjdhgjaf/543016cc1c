@@ -155,8 +155,8 @@ scgi_port = 127.0.0.1:5995
 # plaintext to RC4 encryption after the encrypted handshake 
 #
 # protocol.encryption.set = 
-encryption = allow_incoming,enable_retry,prefer_plaintext 
- 
+encryption = allow_incoming, try_outgoing, enable_retry
+
  
 # Advanced Settings 
 # 
@@ -225,7 +225,7 @@ system.file.split_suffix.set = .part
 
 # set whether the client should try to connect to UDP trackers
 # use_udp_trackers = yes
-trackers.use_udp.set = yes
+trackers.use_udp.set = no
 use_udp_trackers = yes
 
 # use a http proxy. [url] ;an empty string disables this setting
@@ -265,3 +265,11 @@ use_udp_trackers = yes
 #log.add_output = "tracker_debug", "tracker"
 
 #log.add_output = "storage_debug", "storage"
+
+system.umask.set = 022
+encoding_list = UTF-8
+port_open = yes
+trackers.enable = 1
+system.file.allocate.set = yes
+network.tos.set = throughput
+trackers.numwant.set = 400
