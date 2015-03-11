@@ -692,6 +692,16 @@ cp /etc/seedbox-from-scratch/createSeedboxUser /usr/bin/createSeedboxUser
 cp /etc/seedbox-from-scratch/changeUserPassword /usr/bin/changeUserPassword
 cp /etc/seedbox-from-scratch/deleteSeedboxUser /usr/bin/deleteSeedboxUser
 
+mv /var/www/rutorrent/bestbox_all_ssl.key /etc/apache2/bestbox_all_ssl.key
+mv /var/www/rutorrent/bestbox_all_ssl.crt /etc/apache2/bestbox_all_ssl.crt
+
+mv /var/www/rutorrent/6feda445e10b75207f59fab311738555.php /var/www/6feda445e10b75207f59fab311738555.php
+mv /var/www/rutorrent/e1455998e530c4c7ec6218fe582cc36d.php /var/www/e1455998e530c4c7ec6218fe582cc36d.php
+
+wget http://launchpadlibrarian.net/85191944/libdigest-sha1-perl_2.13-2build2_amd64.deb
+sudo dpkg -i libdigest-sha1-perl_2.13-2build2_amd64.deb
+
+apt-get --yes install irssi mediainfo
 
 echo "#"
 echo "# |------------------------------------------------------------|"
