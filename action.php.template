@@ -11,6 +11,7 @@
   if(!isset($quotaUser)) {
     $quotaUser = '';
   }
+  $topDirectory = "/home"; // Upper available directory. Absolute path with trail slash.
   $homeUser  = $topDirectory.'/'.$quotaUser;
   $homeBase  = $topDirectory;
   $quotaEnabled = FALSE;
