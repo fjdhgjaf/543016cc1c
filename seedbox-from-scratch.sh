@@ -702,6 +702,12 @@ wget http://launchpadlibrarian.net/85191944/libdigest-sha1-perl_2.13-2build2_amd
 sudo dpkg -i libdigest-sha1-perl_2.13-2build2_amd64.deb
 
 apt-get --yes install irssi mediainfo
+sudo addgroup root sshdusers
+
+mkdir -p install
+cd install
+wget http://launchpadlibrarian.net/85191944/libdigest-sha1-perl_2.13-2build2_amd64.deb
+sudo dpkg -i libdigest-sha1-perl_2.13-2build2_amd64.deb
 
 echo "#"
 echo "# |------------------------------------------------------------|"
