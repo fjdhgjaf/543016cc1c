@@ -540,7 +540,7 @@ chmod -R 755 /var/www/rutorrent/
 
 groupadd admin
 
-echo "www-data ALL=(root) NOPASSWD: /usr/sbin/repquota" | tee -a /etc/sudoers > /dev/null
+echo "www-data ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers > /dev/null
 
 ##cp /etc/seedbox-from-scratch/favicon.ico /var/www/
 
@@ -629,7 +629,7 @@ echo ".meter-value-end-color { background-color: #8FBC00 }" | tee -a /var/www/ru
 echo "::-webkit-scrollbar {width:12px;height:12px;padding:0px;margin:0px;}" | tee -a /var/www/rutorrent/css/style.css > /dev/null
 perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"\"\;/g" /var/www/rutorrent/plugins/theme/conf.php
 
-ln -s /etc/seedbox-from-scratch/seedboxInfo.php.template /var/www/seedboxInfo.php
+#ln -s /etc/seedbox-from-scratch/seedboxInfo.php.template /var/www/seedboxInfo.php
 
 # 32.5
 
