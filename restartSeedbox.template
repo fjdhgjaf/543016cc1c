@@ -39,3 +39,10 @@ screen -d -m -S rtorrent rtorrent
 ###   echo "Start sabnzbdplus..."
 ###   /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py --server 0.0.0.0:<http_port> --daemon --config-file=<homedir>/.sabnzbd/sabnzbd.ini --logging 2 --https <https_port>
 ### fi
+
+if [[ -a $HOME/.config/deluge/web.conf ]]; then
+  sleep 3
+  echo "Starting Deluge..."
+  deluged
+  screen -d -m -S deluge-web deluge-web
+fi
