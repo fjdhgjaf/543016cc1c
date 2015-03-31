@@ -3,11 +3,25 @@
 #!/bin/bash
 # ---------------------------
 #
-# |--------------------------------------------------------------|
-# | The script thank you for Notos (notos.korsan@gmail.com)      |
-# |--------------------------------------------------------------|
-# | The script was further developed Tiby08 (tiby0108@gmail.com) |
-# |--------------------------------------------------------------|
+#
+#
+# The Seedbox From Scratch Script
+#   By Notos ---> https://github.com/Notos/
+#
+#
+######################################################################
+#
+#  Copyright (c) 2013 Notos (https://github.com/Notos/)
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+#  --> Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+#
+######################################################################
 #
 #
 # 3.1
@@ -100,6 +114,12 @@ function getString
   done
   eval $RETURN=\$NEWVAR1
 }
+
+function genPasswd {
+  local l=$1
+  [ "$l" == "" ] && l=32
+  tr -dc A-Za-z0-9 < /dev/urandom | head -c ${l} | xargs
+}
 #
 #
 
@@ -117,14 +137,14 @@ if [ $1 ]; then
   NEWUSER1=$1
   NEWUSER2=$1
 else
-  getString NO  "Felhasználónév: " NEWUSER1
+  getString NO  "Username for your seedbox user: " NEWUSER1
 fi
 
 if [ $2 ]; then
   PASSWORD1=$2
   PASSWORD2=$2
 else
-  getString YES "ruTorrent jelszó $NEWUSER1: " PASSWORD1
+  getString YES "ruTorrent password for user $NEWUSER1: " PASSWORD1
 fi
 
 if [ $3 ]
@@ -168,11 +188,7 @@ else
   getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
 fi
 
-if [ "$CHROOTJAIL1" == "NO" ] && [ "$USERINSUDOERS1" == "YES" ]; then
-  echo "$NEWUSER1" | sudo tee -a /etc/vsftpd.chroot_list &> /dev/null
-fi
-
-if [ "$CHROOTJAIL1" == "NO" ] && [ "$USERINSUDOERS1" == "YES" ]; then
+if [ "$USERINSUDOERS1" <> "YES" ]; then
   echo "$NEWUSER1" | sudo tee -a /etc/vsftpd.chroot_list &> /dev/null
 fi
 
@@ -194,6 +210,7 @@ SBFSCURRENTVERSION=`cat /etc/seedbox-from-scratch/version.info`
 NEWFTPPORT1=`cat /etc/seedbox-from-scratch/ftp.info`
 NEWSSHPORT1=`cat /etc/seedbox-from-scratch/ssh.info`
 DELUGEINSTALLED1=`cat /etc/seedbox-from-scratch/deluge.info`
+MAINUSER1=`cat /etc/seedbox-from-scratch/mainuser.info`
 
 # 3.2
 
@@ -403,19 +420,19 @@ if [ "$CHROOTJAIL1" == "YES" ]; then
 else
   echo "" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
   echo "[fileupload]" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
-  echo "enabled = no" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
+  echo "enabled = yes" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
   echo "" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
   echo "[mediastream]" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
-  echo "enabled = no" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
+  echo "enabled = yes" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
   echo "" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
   echo "[filemanager]" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
-  echo "enabled = yes" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
+  echo "enabled = user-defined" | sudo tee -a /var/www/rutorrent/conf/users/$NEWUSER1/plugins.ini
 fi
 
 # 26.
 
 if [ -f /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]; then
-  sudo su --login --command "echo "SABNZBD HTTP port: $SABNZBDHTTPPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info --server localhost:$SABNZBDHTTPPORT1 --https $SABNZBDHTTPSPORT1 --daemon --config-file=$HOMEJAILED1/.sabnzbd/sabnzbd.ini --logging 2" $NEWUSER1
+  sudo su --login --command "/etc/seedbox-from-scratch/sabnzbd/SABnzbd.py --server localhost:$SABNZBDHTTPPORT1 --https $SABNZBDHTTPSPORT1 --daemon --config-file=$HOMEJAILED1/.sabnzbd/sabnzbd.ini --logging 2" $NEWUSER1
   sleep 5
   sudo kill -9 `sudo ps aux | grep $NEWUSER1 | grep SABnzbd | grep -v grep | awk '{print $2}' | cut -d. -f 1` &> /dev/null
 
@@ -423,8 +440,6 @@ if [ -f /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]; then
   sudo cp /root/CA/sabnzbd.cert $HOMEJAILED1/.sabnzbd/admin/
   sudo cp /root/CA/sabnzbd.key $HOMEJAILED1/.sabnzbd/admin/
   sudo cp /root/CA/sabnzbd.pem $HOMEJAILED1/.sabnzbd/admin/
-
-  sudo $HOMEJAILED1/.sabnzbd/sabnzbd.ini $HOMEJAILED1/.sabnzbd/sabnzbd.ini.original
 
   sudo perl -pi -e "s/username = \"\"/username = \"$NEWUSER1\"/g" $HOMEJAILED1/.sabnzbd/sabnzbd.ini
 # sudo perl -pi -e "s/password = \"\"/password = \"$PASSWORD1\"/g" $HOMEJAILED1/.sabnzbd/sabnzbd.ini ############### now you can just run changeUserPassword if you forget it :)
@@ -453,9 +468,6 @@ if [ -f /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]; then
   sudo chown -R $NEWUSER1: $HOMEJAILED1/downloads
 fi
 
-################################
-##### Deluge on
-###############################
 if [ "$DELUGEINSTALLED1" == "YES" ]; then
   if [ "$NEWUSER1" = "$MAINUSER1" ]; then
     sudo kill -9 `sudo ps aux | grep deluge | grep -v grep | awk '{print $2}' | cut -d. -f 1` &> /dev/null
@@ -516,14 +528,8 @@ if [ "$DELUGEINSTALLED1" == "YES" ]; then
   sudo chown -R $NEWUSER1:$NEWUSER1  $HOMEJAILED1/.config/
   sudo chown -R $NEWUSER1:$NEWUSER1  $HOMEJAILED1/downloads/
 fi
-################################
-##### Deluge OFF
-###############################
 
-# 29.2   ---- New Trunk of AutodlIrssi ---- by thebigmunch
-#        ---- Based on https://github.com/autodl-irssi-community/autodl-irssi
-#        ---- what/forums.php?action=viewthread&threadid=151523
-#        ---- commit log: https://github.com/autodl-irssi-community/autodl-irssi/commits/master
+# 29.1 ---- Main Trunk of AutodlIrssi ---- Not maintained by developers anymore
 
 #sudo rm -R $HOMEJAILED1/.irssi
 #sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
@@ -538,16 +544,19 @@ fi
 #sudo unzip /etc/seedbox-from-scratch/autodl-trackers.zip -d $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers/
 #sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers
 
+# 29.2   ---- New Trunk of AutodlIrssi ---- by thebigmunch
+#        ---- Based on https://github.com/autodl-irssi-community/autodl-irssi
+#        ---- what/forums.php?action=viewthread&threadid=151523
+#        ---- commit log: https://github.com/autodl-irssi-community/autodl-irssi/commits/master
+
 sudo rm -R $HOMEJAILED1/.irssi
 sudo git clone https://github.com/autodl-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
 sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
-sudo git clone https://github.com/autodl-community/autodl-trackers.git $HOMEJAILED1/.irssi/scripts/AutodlIrssi/trackers
 cd $HOMEJAILED1/.irssi/scripts
 sudo cp autodl-irssi.pl autorun/
 sudo mkdir -p $HOMEJAILED1/.autodl
 sudo touch $HOMEJAILED1/.autodl/autodl.cfg
 sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
-
 
 # 29.3
 
@@ -578,8 +587,8 @@ echo "https://$IPADDRESS1/seedboxInfo.php" | sudo tee -a /etc/seedbox-from-scrat
 echo "" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "User personal info" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "-------------------" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Felhasználónév: $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Jelszó: $PASSWORD1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Username: $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Password: $PASSWORD1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "RPC: $NEWRPC1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "IRSSI Password: $IRSSIPASSWORD1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "SSH: $USERHASSSHACCESS1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
@@ -602,20 +611,22 @@ echo "SFTP port: $NEWSSHPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NE
 echo "vsftp port: $NEWFTPPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "IRSSI Port: $IRSSIPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "SCGI Port: $SCGIPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "rTorrent network port: $NETWORKPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "SABNZBD HTTPS port: $SABNZBDHTTPSPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "SABNZBD HTTP port: $SABNZBDHTTPPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-
+echo "RTorrent network port: $NETWORKPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+if [ -f /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]; then
+  echo "SABNZBD HTTPS port: $SABNZBDHTTPSPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+  echo "SABNZBD HTTP port: $SABNZBDHTTPPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+fi
 if [ "$DELUGEINSTALLED1" == "YES" ]; then
   echo "Deluge daemon port: $DEAMONPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
   echo "Deluge web port: $WEBPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 fi
 
-
 echo "" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Links" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "-----" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "SABnzbd: https://$IPADDRESS1:$SABNZBDHTTPSPORT1/sabnzbd/" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+if [ -f /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]; then
+  echo "SABnzbd: https://$IPADDRESS1:$SABNZBDHTTPSPORT1/sabnzbd/" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+fi
 echo "ruTorrent: http://$IPADDRESS1/rutorrent/" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "ruTorrent: https://$IPADDRESS1/rutorrent/" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Webmin: https://$IPADDRESS1:10000" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
@@ -626,12 +637,14 @@ fi
 if [ "$DELUGEINSTALLED1" == "YES" ]; then
   echo "Deluge: http://$IPADDRESS1:$WEBPORT1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 fi
+echo "OpenVPN config: https://$IPADDRESS1/rutorrent/vpn.zip" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+
 echo "" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting and restartring commands" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "---------------------------------" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Restarting seedbox logged as $NEWUSER1: $HOMEJAILED1/restartSeedbox" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Restarting seedbox as any other user: sudo su --login --command \"$HOMEJAILED1/restartSeedbox\" $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Starting rTorrent: screen -d -m -S rtorrent rtorrent" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Starting RTorrent: screen -d -m -S rtorrent rtorrent" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting IRSSI: screen -d -m -S irssi irssi" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting sabnzbdplus: screen -dmS sabnzbd sabnzbdplus" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 
