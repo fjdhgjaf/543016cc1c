@@ -39,7 +39,7 @@ min_peers_seed = 25
 max_peers_seed = 60 
  
 # tracker_numwant = -1
-trackers.numwant.set = -1
+trackers.numwant.set = 400
  
 # check hash for finished torrents. might be useful until the bug is 
 # fixed that causes lack of diskspace not to be properly reported 
@@ -80,10 +80,10 @@ pieces.memory.max.set = 3500M
  
 # max number of files to keep open simultaneously 
 # max_open_files = 192 
-network.max_open_files.set = 5 
+network.max_open_files.set = 10
  
 # max_open_http = 32 
-network.http.max_open.set = 5
+network.http.max_open.set = 10
  
  
 # BitTorrent Settings 
@@ -273,3 +273,5 @@ trackers.enable = 1
 system.file.allocate.set = yes
 network.tos.set = throughput
 trackers.numwant.set = 400
+
+execute = {sh,-c,/usr/bin/php /var/www/rutorrent/php/initplugins.php <username> &}
