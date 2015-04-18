@@ -235,7 +235,7 @@ getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 NO
 getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
 getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
 getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 NO
-getString NO  "Install Deluge? " INSTALLDELUGE1 YES
+getString NO  "Install Deluge? " INSTALLDELUGE1 NO
 
 #getString NO  "Wich rTorrent would you like to use, '0.8.9' (older stable) or '0.9.2' (newer but banned in some trackers)? " RTORRENT1 0.9.2
 RTORRENT1=0.9.2
