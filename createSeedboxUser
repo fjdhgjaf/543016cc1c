@@ -538,14 +538,31 @@ fi
 #        ---- what/forums.php?action=viewthread&threadid=151523
 #        ---- commit log: https://github.com/autodl-irssi-community/autodl-irssi/commits/master
 
+#####Régi autodl-irrsi
+#sudo rm -R $HOMEJAILED1/.irssi
+#sudo git clone https://github.com/autodl-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
+#sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
+#cd $HOMEJAILED1/.irssi/scripts
+#sudo cp autodl-irssi.pl autorun/
+#sudo mkdir -p $HOMEJAILED1/.autodl
+#sudo touch $HOMEJAILED1/.autodl/autodl.cfg
+#sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
+
+#############################################
+##Új autodl-irssi
+#############################################
 sudo rm -R $HOMEJAILED1/.irssi
-sudo git clone https://github.com/autodl-community/autodl-irssi.git $HOMEJAILED1/.irssi/scripts/
-sudo mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
+mkdir -p $HOMEJAILED1/.irssi/scripts/autorun
 cd $HOMEJAILED1/.irssi/scripts
+wget -O autodl-irssi.zip http://update.autodl-community.com/autodl-irssi-community.zip
+unzip -o autodl-irssi.zip
+sudo rm -R autodl-irssi.zip
 sudo cp autodl-irssi.pl autorun/
 sudo mkdir -p $HOMEJAILED1/.autodl
 sudo touch $HOMEJAILED1/.autodl/autodl.cfg
-sudo chown -R $NEWUSER1: $HOMEJAILED1/.irssi
+#############################################
+##Új autodl-irssi vége
+#############################################
 
 # 29.3
 
@@ -636,10 +653,6 @@ echo "Restarting seedbox as any other user: sudo su --login --command \"$HOMEJAI
 echo "Starting RTorrent: screen -d -m -S rtorrent rtorrent" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting IRSSI: screen -d -m -S irssi irssi" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting sabnzbdplus: screen -dmS sabnzbd sabnzbdplus" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-
-cp /etc/seedbox-from-scratch/users/$NEWUSER1.info $HOMEJAILED1/$NEWUSER1.info
-sudo chown $NEWUSER1: $HOMEJAILED1/$NEWUSER1.info
-sudo chmod 400 $HOMEJAILED1/$NEWUSER1.info
 
 set +x verbose
 clear
