@@ -374,11 +374,11 @@ do
   echo "$i" | tee -a /etc/seedbox-from-scratch/ports.txt > /dev/null
 done
 
-rm -f /etc/seedbox-from-scratch/rpc.txt
-for i in $(seq 2 1000)
-do
-  echo "RPC$i"  | tee -a /etc/seedbox-from-scratch/rpc.txt > /dev/null
-done
+#rm -f /etc/seedbox-from-scratch/rpc.txt
+#for i in $(seq 2 1000)
+#do
+#  echo "RPC$i"  | tee -a /etc/seedbox-from-scratch/rpc.txt > /dev/null
+#done
 
 # 8.4
 
