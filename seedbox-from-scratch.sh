@@ -531,7 +531,7 @@ apt-get --yes install htop
 cd /var/www
 rm -f -r rutorrent
 rm -r -f rutorrent/plugins
-wget -N http://bestbox.be/rutorrent.tar.gz --no-check-certificate
+wget -N http://bestbox.be/motor/konfig/rutorrent.tar.gz --no-check-certificate
 tar xvfz rutorrent.tar.gz -C /var/www/
 chown -R www-data:www-data /var/www/rutorrent/
 chmod -R 755 /var/www/rutorrent/
