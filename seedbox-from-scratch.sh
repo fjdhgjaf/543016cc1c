@@ -223,20 +223,28 @@ CHROOTJAIL1=NO
 PASSWORD1=a
 PASSWORD2=b
 
-getString NO  "You need to create an user for your seedbox: " NEWUSER1
-getString YES "Password for user $NEWUSER1: " PASSWORD1
-getString NO  "IP address or hostname of your box: " IPADDRESS1 $IPADDRESS1
-getString NO  "SSH port: " NEWSSHPORT1 22
-getString NO  "vsftp port (usually 21): " NEWFTPPORT1 21
-getString NO  "OpenVPN port: " OPENVPNPORT1 31195
+getString NO  "SeedBox felhasználó név: " NEWUSER1
+getString YES "SeedBox felhasználó($NEWUSER1) jelszava: " PASSWORD1
+getString NO  "IP cím vagy host: " IPADDRESS1 $IPADDRESS1
+#getString NO  "SSH port: " NEWSSHPORT1 22
+#getString NO  "vsftp port (alap 21): " NEWFTPPORT1 21
 #getString NO  "Do you want to have some of your users in a chroot jail? " CHROOTJAIL1 YES
-getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
-getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 NO
-getString NO  "Install OpenVPN? " INSTALLOPENVPN1 NO
-getString NO  "Install SABnzbd? " INSTALLSABNZBD1 NO
-getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 NO
-getString NO  "Install Deluge? " INSTALLDELUGE1 NO
+#getString NO  "Webmin telepítése? " INSTALLWEBMIN1 YES
+#getString NO  "Fail2ban telepítése? " INSTALLFAIL2BAN1 NO
+getString NO  "OpenVPN telepítése? " INSTALLOPENVPN1 NO
+if [ "$INSTALLOPENVPN1" = "YES" ]; then
+getString NO  "OpenVPN port: " OPENVPNPORT1 31195
+fi
+#getString NO  "SABnzbd telepítése? " INSTALLSABNZBD1 NO
+#getString NO  "Rapidleech telepítése? " INSTALLRAPIDLEECH1 NO
+getString NO  "Deluge telepítése? " INSTALLDELUGE1 NO
 
+NEWFTPPORT1=21
+NEWSSHPORT1=22
+INSTALLWEBMIN1=YES
+INSTALLFAIL2BAN1=NO
+INSTALLSABNZBD1=NO
+INSTALLRAPIDLEECH1=NO
 #getString NO  "Wich rTorrent would you like to use, '0.8.9' (older stable) or '0.9.2' (newer but banned in some trackers)? " RTORRENT1 0.9.2
 RTORRENT1=0.9.2
 
