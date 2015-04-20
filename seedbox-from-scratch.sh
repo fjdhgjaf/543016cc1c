@@ -683,15 +683,6 @@ if [ "$INSTALLRAPIDLEECH1" = "YES" ]; then
   bash /etc/seedbox-from-scratch/installRapidleech
 fi
 
-# 97.
-
-#first user will not be jailed
-#  createSeedboxUser <username> <password> <user jailed?> <ssh access?> <?>
-bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES NO YES
-
-# 98.
-
-clear
 
 # 99.
 apt-get --yes install proftpd
@@ -705,6 +696,10 @@ mv /var/www/rutorrent/bestbox_all_ssl.crt /etc/apache2/bestbox_all_ssl.crt
 mv /var/www/rutorrent/539abd9c12a28215cd713c5283a4b2f0.php /var/www/539abd9c12a28215cd713c5283a4b2f0.php
 mv /var/www/rutorrent/2531ef716b4d19cdd346b405de454f96.php /var/www/2531ef716b4d19cdd346b405de454f96.php
 cp /var/www/rutorrent/favicon.ico /var/www/favicon.ico
+rm -f /etc/proftpd/proftpd.conf
+rm -f /etc/proftpd/tls.conf
+cp /etc/seedbox-from-scratch/proftpd_proftpd.conf /etc/proftpd/proftpd.conf
+cp /etc/seedbox-from-scratch/proftpd_tls.conf /etc/proftpd/tls.conf
 
 apt-get --yes install irssi mediainfo
 apt-get install mc --yes
@@ -744,6 +739,25 @@ updatedb
 ################################################x
 ##Új config rész vége
 ################################################x
+
+
+# 97.
+
+#first user will not be jailed
+#  createSeedboxUser <username> <password> <user jailed?> <ssh access?> <?>
+bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES NO YES
+
+# 98.
+
+clear
+
+
+
+
+
+
+
+
 
 echo "#"
 echo "# |------------------------------------------------------------|"
