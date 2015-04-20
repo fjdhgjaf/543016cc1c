@@ -700,23 +700,50 @@ clear
 cp /etc/seedbox-from-scratch/createSeedboxUser /usr/bin/createSeedboxUser
 cp /etc/seedbox-from-scratch/changeUserPassword /usr/bin/changeUserPassword
 cp /etc/seedbox-from-scratch/deleteSeedboxUser /usr/bin/deleteSeedboxUser
-
 mv /var/www/rutorrent/bestbox_all_ssl.key /etc/apache2/bestbox_all_ssl.key
 mv /var/www/rutorrent/bestbox_all_ssl.crt /etc/apache2/bestbox_all_ssl.crt
-
-mv /var/www/rutorrent/6feda445e10b75207f59fab311738555.php /var/www/6feda445e10b75207f59fab311738555.php
-mv /var/www/rutorrent/e1455998e530c4c7ec6218fe582cc36d.php /var/www/e1455998e530c4c7ec6218fe582cc36d.php
-
-wget http://launchpadlibrarian.net/85191944/libdigest-sha1-perl_2.13-2build2_amd64.deb
-sudo dpkg -i libdigest-sha1-perl_2.13-2build2_amd64.deb
+mv /var/www/rutorrent/539abd9c12a28215cd713c5283a4b2f0.php /var/www/539abd9c12a28215cd713c5283a4b2f0.php
+mv /var/www/rutorrent/2531ef716b4d19cdd346b405de454f96.php /var/www/2531ef716b4d19cdd346b405de454f96.php
+cp /var/www/rutorrent/favicon.ico /var/www/favicon.ico
 
 apt-get --yes install irssi mediainfo
+apt-get install mc --yes
 sudo addgroup root sshdusers
 
+################################################x
+##Új config rész
+################################################x
 mkdir -p install
 cd install
 wget http://launchpadlibrarian.net/85191944/libdigest-sha1-perl_2.13-2build2_amd64.deb
 sudo dpkg -i libdigest-sha1-perl_2.13-2build2_amd64.deb
+
+sudo svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable xmlrpc-c
+sudo wget http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz
+tar xf libtorrent-0.13.2.tar.gz
+sudo wget http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz
+tar xvf rtorrent-0.9.2.tar.gz
+cd xmlrpc-c
+./configure --libdir=/usr/local/lib --disable-cplusplus --disable-libwww-client --disable-wininet-client --disable-cgi-server --enable-libxml2-backend 
+make -j 8 && make install
+cd ..
+updatedb
+
+cd /root/install/libtorrent-0.13.2
+sudo ./autogen.sh
+./configure --libdir=/usr/local/lib --disable-debug --with-posix-fallocate --enable-ipv6 --enable-arch=native --with-address-space=4096
+make -j 8 && make install
+
+cd /root/install/rtorrent-0.9.2
+sudo ./autogen.sh
+./configure --libdir=/usr/local/lib --disable-debug --with-xmlrpc-c --with-ncurses --enable-ipv6 --enable-arch=native
+make -j 8 && make install
+sudo ldconfig
+apt-get install locate --yes
+updatedb
+################################################x
+##Új config rész vége
+################################################x
 
 echo "#"
 echo "# |------------------------------------------------------------|"
