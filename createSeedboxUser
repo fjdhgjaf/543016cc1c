@@ -123,27 +123,30 @@ if [ $1 ]; then
   NEWUSER1=$1
   NEWUSER2=$1
 else
-  getString NO  "Username for your seedbox user: " NEWUSER1
+  getString NO  "SeedBox felhasználónév: " NEWUSER1
 fi
 
 if [ $2 ]; then
   PASSWORD1=$2
   PASSWORD2=$2
 else
-  getString YES "ruTorrent password for user $NEWUSER1: " PASSWORD1
+  getString YES "ruTorrent felhasználó($NEWUSER1) jelszava: " PASSWORD1
 fi
 
-if [ $3 ]
-then
-  if [ "$3" == "YES" ] || [ "$3" == "NO" ]; then
-    USERHASSSHACCESS1=$3
-    USERHASSSHACCESS2=$3
-  else
-    getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
-  fi
-else
-  getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
-fi
+#####Csere NO-ra
+USERHASSSHACCESS1=YES
+USERINSUDOERS1=YES
+#if [ $3 ]
+#then
+#  if [ "$3" == "YES" ] || [ "$3" == "NO" ]; then
+#    USERHASSSHACCESS1=$3
+#    USERHASSSHACCESS2=$3
+#  else
+#    getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
+#  fi
+#else
+#  getString NO  "User can login via SSH?: " USERHASSSHACCESS1 NO
+#fi
 
 CHROOTJAIL1=NO
 #if [ -f /etc/jailkit/jk_init.ini ] && [ "$USERHASSSHACCESS1" == "YES" ]; then
@@ -162,17 +165,17 @@ CHROOTJAIL1=NO
 #  CHROOTJAIL1=NO
 #fi
 
-if [ $5 ]
-then
-  if [ "$5" == "YES" ] || [ "$5" == "NO" ]; then
-    USERINSUDOERS1=$5
-    USERINSUDOERS2=$5
-  else
-    getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
-  fi
-else
-  getString NO  "Add user to sudoers?: " USERINSUDOERS1 NO
-fi
+#if [ $5 ]
+#then
+#  if [ "$5" == "YES" ] || [ "$5" == "NO" ]; then
+#    USERINSUDOERS1=$5
+#    USERINSUDOERS2=$5
+#  else
+#    getString NO  "SSH-ba beléphet?: " USERINSUDOERS1 NO
+#  fi
+#else
+#  getString NO  "SSH-ba beléphet?: " USERINSUDOERS1 NO
+#fi
 
 if [ "$USERINSUDOERS1" <> "YES" ]; then
   echo "$NEWUSER1" | sudo tee -a /etc/vsftpd.chroot_list &> /dev/null
