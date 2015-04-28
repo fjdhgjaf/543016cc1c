@@ -10,7 +10,7 @@
 # |--------------------------------------------------------------|
 #
 #
-  SBFSCURRENTVERSION1=2.1.8   
+  SBFSCURRENTVERSION1=2.2   
   OS1=$(lsb_release -si)
 function getString
 {
