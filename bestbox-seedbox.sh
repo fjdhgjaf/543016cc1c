@@ -65,9 +65,9 @@ function getString
     else
       if [ "$ISPASSWORD" == "YES" ]; then
         echo
-        read -s -p "Retype: " NEWVAR2
+        read -s -p "Újra: " NEWVAR2
       else
-        read -p "Retype: " NEWVAR2
+        read -p "Újra: " NEWVAR2
       fi
       if [ -z "$NEWVAR2" ]; then
         NEWVAR2=b
