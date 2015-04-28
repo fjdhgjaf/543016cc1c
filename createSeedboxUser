@@ -25,8 +25,8 @@ function getString
   local DEFAULT=$4
   local NEWVAR1=a
   local NEWVAR2=b
-  local YESYES=YESyes
-  local NONO=NOno
+  local YESYES=YESyesIGENigen
+  local NONO=NOnoNEMnem
   local YESNO=$YESYES$NONO
 
   while [ ! $NEWVAR1 = $NEWVAR2 ] || [ -z "$NEWVAR1" ];
