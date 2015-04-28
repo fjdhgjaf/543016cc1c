@@ -12,22 +12,22 @@
 #
 #
 
-sudo mkdir -p /etc/seedbox-from-scratch/ssl/CA
-sudo chmod 777 /etc/seedbox-from-scratch/ssl/CA
-cd /etc/seedbox-from-scratch/ssl/CA
+sudo mkdir -p /etc/bestbox-seedbox/ssl/CA
+sudo chmod 777 /etc/bestbox-seedbox/ssl/CA
+cd /etc/bestbox-seedbox/ssl/CA
 
-IPADDRESS1=`cat /etc/seedbox-from-scratch/hostname.info`
-NEWUSER1=`cat /etc/seedbox-from-scratch/mainuser.info`
+IPADDRESS1=`cat /etc/bestbox-seedbox/hostname.info`
+NEWUSER1=`cat /etc/bestbox-seedbox/mainuser.info`
 SERVICENAME1=$1
 SUBJ1="/C=US/ST=Denial/L=Springfield/O=Dis/CN=$IPADDRESS1/emailAddress=root@$NEWUSER1.com/OU=$NEWUSER1"
-CERTPASS1=`cat /etc/seedbox-from-scratch/certpass.info`
+CERTPASS1=`cat /etc/bestbox-seedbox/certpass.info`
 
-sudo openssl genrsa 1024 | sudo tee /etc/seedbox-from-scratch/ssl/CA/$SERVICENAME1.key
-sudo openssl req -new -x509 -nodes -sha1 -days 365 -key /etc/seedbox-from-scratch/ssl/CA/$SERVICENAME1.key -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf -batch -subj $SUBJ1 | sudo tee /etc/seedbox-from-scratch/ssl/CA/$SERVICENAME1.cert
-sudo openssl ca -batch -keyfile /etc/seedbox-from-scratch/ssl/CA/private/cakey.pem -passin pass:$CERTPASS1 -subj $SUBJ1 -out /etc/seedbox-from-scratch/ssl/CA/$SERVICENAME1.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf -passin pass:$CERTPASS1 -ss_cert /etc/seedbox-from-scratch/ssl/CA/$SERVICENAME1.cert
-sudo cp /etc/seedbox-from-scratch/ssl/CA/$SERVICENAME1.* /etc/seedbox-from-scratch/ssl/
-sudo chmod 600 /etc/seedbox-from-scratch/ssl/*
-sudo chmod 644 /etc/seedbox-from-scratch/ssl/cert.pem
-sudo chmod 644 /etc/seedbox-from-scratch/ssl/key.pem
+sudo openssl genrsa 1024 | sudo tee /etc/bestbox-seedbox/ssl/CA/$SERVICENAME1.key
+sudo openssl req -new -x509 -nodes -sha1 -days 365 -key /etc/bestbox-seedbox/ssl/CA/$SERVICENAME1.key -config /etc/bestbox-seedbox/ssl/CA/caconfig.cnf -batch -subj $SUBJ1 | sudo tee /etc/bestbox-seedbox/ssl/CA/$SERVICENAME1.cert
+sudo openssl ca -batch -keyfile /etc/bestbox-seedbox/ssl/CA/private/cakey.pem -passin pass:$CERTPASS1 -subj $SUBJ1 -out /etc/bestbox-seedbox/ssl/CA/$SERVICENAME1.pem -config /etc/bestbox-seedbox/ssl/CA/caconfig.cnf -passin pass:$CERTPASS1 -ss_cert /etc/bestbox-seedbox/ssl/CA/$SERVICENAME1.cert
+sudo cp /etc/bestbox-seedbox/ssl/CA/$SERVICENAME1.* /etc/bestbox-seedbox/ssl/
+sudo chmod 600 /etc/bestbox-seedbox/ssl/*
+sudo chmod 644 /etc/bestbox-seedbox/ssl/cert.pem
+sudo chmod 644 /etc/bestbox-seedbox/ssl/key.pem
 
 ##################### LAST LINE ###########

@@ -34,10 +34,10 @@ screen -d -m -S rtorrent rtorrent
 ### echo "Start IRSSI..."
 ### screen -d -m -S irssi irssi
 
-### if [[ -a /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py ]]; then
+### if [[ -a /etc/bestbox-seedbox/sabnzbd/SABnzbd.py ]]; then
 ###   sleep 3
 ###   echo "Start sabnzbdplus..."
-###   /etc/seedbox-from-scratch/sabnzbd/SABnzbd.py --server 0.0.0.0:<http_port> --daemon --config-file=<homedir>/.sabnzbd/sabnzbd.ini --logging 2 --https <https_port>
+###   /etc/bestbox-seedbox/sabnzbd/SABnzbd.py --server 0.0.0.0:<http_port> --daemon --config-file=<homedir>/.sabnzbd/sabnzbd.ini --logging 2 --https <https_port>
 ### fi
 
 if [[ -a $HOME/.config/deluge/web.conf ]]; then

@@ -1,4 +1,4 @@
-cd /etc/seedbox-from-scratch
+cd /etc/bestbox-seedbox
 sudo apt-get --yes purge sabnzbdplus
 sudo apt-get --yes install python-cheetah
 sudo apt-get --yes install python-pyopenssl

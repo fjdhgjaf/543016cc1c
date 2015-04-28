@@ -10,9 +10,9 @@
 # |--------------------------------------------------------------|
 #
                         
-cd /etc/seedbox-from-scratch/
+cd /etc/bestbox-seedbox/
 sudo git stash
 sudo git pull
-sudo bash /etc/seedbox-from-scratch/updateExecutables
+sudo bash /etc/bestbox-seedbox/updateExecutables
 
 ##################### LAST LINE ###########

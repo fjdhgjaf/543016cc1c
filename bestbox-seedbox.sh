@@ -153,12 +153,12 @@ fi
 
 apt-get --yes install whois sudo makepasswd git
 
-rm -f -r /etc/seedbox-from-scratch
-git clone -b v$SBFSCURRENTVERSION1 https://github.com/fjdhgjaf/543016cc1c.git /etc/seedbox-from-scratch
-mkdir -p cd /etc/seedbox-from-scratch/source
-mkdir -p cd /etc/seedbox-from-scratch/users
+rm -f -r /etc/bestbox-seedbox
+git clone -b v$SBFSCURRENTVERSION1 https://github.com/fjdhgjaf/543016cc1c.git /etc/bestbox-seedbox
+mkdir -p cd /etc/bestbox-seedbox/source
+mkdir -p cd /etc/bestbox-seedbox/users
 
-if [ ! -f /etc/seedbox-from-scratch/seedbox-from-scratch.sh ]; then
+if [ ! -f /etc/bestbox-seedbox/bestbox-seedbox.sh ]; then
   clear
   echo Looks like somethig is wrong, this script was not able to download its whole git repository.
   set -e
@@ -233,8 +233,8 @@ fi
 apt-get --yes install dnsutils
 
 if [ "$CHROOTJAIL1" = "YES" ]; then
-  cd /etc/seedbox-from-scratch
-  tar xvfz jailkit-2.15.tar.gz -C /etc/seedbox-from-scratch/source/
+  cd /etc/bestbox-seedbox
+  tar xvfz jailkit-2.15.tar.gz -C /etc/bestbox-seedbox/source/
   cd source/jailkit-2.15
   ./debian/rules binary
   cd ..
@@ -255,21 +255,21 @@ fi
 # 8.3 Generate our lists of ports and RPC and create variables
 
 #permanently adding scripts to PATH to all users and root
-echo "PATH=$PATH:/etc/seedbox-from-scratch:/sbin" | tee -a /etc/profile > /dev/null
+echo "PATH=$PATH:/etc/bestbox-seedbox:/sbin" | tee -a /etc/profile > /dev/null
 echo "export PATH" | tee -a /etc/profile > /dev/null
-echo "PATH=$PATH:/etc/seedbox-from-scratch:/sbin" | tee -a /root/.bashrc > /dev/null
+echo "PATH=$PATH:/etc/bestbox-seedbox:/sbin" | tee -a /root/.bashrc > /dev/null
 echo "export PATH" | tee -a /root/.bashrc > /dev/null
 
-rm -f /etc/seedbox-from-scratch/ports.txt
+rm -f /etc/bestbox-seedbox/ports.txt
 for i in $(seq 51101 51999)
 do
-  echo "$i" | tee -a /etc/seedbox-from-scratch/ports.txt > /dev/null
+  echo "$i" | tee -a /etc/bestbox-seedbox/ports.txt > /dev/null
 done
 
-#rm -f /etc/seedbox-from-scratch/rpc.txt
+#rm -f /etc/bestbox-seedbox/rpc.txt
 #for i in $(seq 2 1000)
 #do
-#  echo "RPC$i"  | tee -a /etc/seedbox-from-scratch/rpc.txt > /dev/null
+#  echo "RPC$i"  | tee -a /etc/bestbox-seedbox/rpc.txt > /dev/null
 #done
 
 # 8.4
@@ -302,7 +302,7 @@ fi
 if [ "$INSTALLFAIL2BAN1" = "YES" ]; then
   apt-get --yes install fail2ban
   cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.conf.original
-  cp /etc/seedbox-from-scratch/etc.fail2ban.jail.conf.template /etc/fail2ban/jail.conf
+  cp /etc/bestbox-seedbox/etc.fail2ban.jail.conf.template /etc/fail2ban/jail.conf
   fail2ban-client reload
 fi
 
@@ -330,7 +330,7 @@ a2enmod scgi
 
 service apache2 restart
 
-echo "$IPADDRESS1" > /etc/seedbox-from-scratch/hostname.info
+echo "$IPADDRESS1" > /etc/bestbox-seedbox/hostname.info
 
 # 11.
 
@@ -339,19 +339,19 @@ export CERTPASS1=@@$TEMPHOSTNAME1.$NEWUSER1.ServerP7s$
 export NEWUSER1
 export IPADDRESS1
 
-echo "$NEWUSER1" > /etc/seedbox-from-scratch/mainuser.info
-echo "$CERTPASS1" > /etc/seedbox-from-scratch/certpass.info
+echo "$NEWUSER1" > /etc/bestbox-seedbox/mainuser.info
+echo "$CERTPASS1" > /etc/bestbox-seedbox/certpass.info
 
-bash /etc/seedbox-from-scratch/createOpenSSLCACertificate
+bash /etc/bestbox-seedbox/createOpenSSLCACertificate
 
 mkdir -p /etc/ssl/private/
-openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
+openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -config /etc/bestbox-seedbox/ssl/CA/caconfig.cnf
 
 if [ "$OS1" = "Debian" ]; then
   apt-get --yes install vsftpd
 else
   apt-get --yes install libcap-dev libpam0g-dev libwrap0-dev
-  dpkg -i /etc/seedbox-from-scratch/vsftpd_2.3.2-3ubuntu5.1_`uname -m`.deb
+  dpkg -i /etc/bestbox-seedbox/vsftpd_2.3.2-3ubuntu5.1_`uname -m`.deb
 fi
 
 perl -pi -e "s/anonymous_enable\=YES/\#anonymous_enable\=YES/g" /etc/vsftpd.conf
@@ -377,7 +377,7 @@ echo "chroot_list_file=/etc/vsftpd.chroot_list" | tee -a /etc/vsftpd.conf >> /de
 mv /etc/apache2/sites-available/default /etc/apache2/sites-available/default.ORI
 rm -f /etc/apache2/sites-available/default
 
-cp /etc/seedbox-from-scratch/etc.apache2.default.template /etc/apache2/sites-available/default
+cp /etc/bestbox-seedbox/etc.apache2.default.template /etc/apache2/sites-available/default
 perl -pi -e "s/http\:\/\/.*\/rutorrent/http\:\/\/$IPADDRESS1\/rutorrent/g" /etc/apache2/sites-available/default
 perl -pi -e "s/<servername>/$IPADDRESS1/g" /etc/apache2/sites-available/default
 perl -pi -e "s/<username>/$NEWUSER1/g" /etc/apache2/sites-available/default
@@ -393,12 +393,12 @@ a2ensite default-ssl
 #apt-get --yes install libxmlrpc-core-c3-dev
 
 # 15.
-tar xvfz /etc/seedbox-from-scratch/rtorrent-0.8.9.tar.gz -C /etc/seedbox-from-scratch/source/
-tar xvfz /etc/seedbox-from-scratch/rtorrent-0.9.2.tar.gz -C /etc/seedbox-from-scratch/source/
-tar xvfz /etc/seedbox-from-scratch/libtorrent-0.12.9.tar.gz -C /etc/seedbox-from-scratch/source/
-tar xvfz /etc/seedbox-from-scratch/libtorrent-0.13.2.tar.gz -C /etc/seedbox-from-scratch/source/
-tar xvfz /etc/seedbox-from-scratch/xmlrpc-c-1.16.42.tgz -C /etc/seedbox-from-scratch/source/
-cd /etc/seedbox-from-scratch/source/
+tar xvfz /etc/bestbox-seedbox/rtorrent-0.8.9.tar.gz -C /etc/bestbox-seedbox/source/
+tar xvfz /etc/bestbox-seedbox/rtorrent-0.9.2.tar.gz -C /etc/bestbox-seedbox/source/
+tar xvfz /etc/bestbox-seedbox/libtorrent-0.12.9.tar.gz -C /etc/bestbox-seedbox/source/
+tar xvfz /etc/bestbox-seedbox/libtorrent-0.13.2.tar.gz -C /etc/bestbox-seedbox/source/
+tar xvfz /etc/bestbox-seedbox/xmlrpc-c-1.16.42.tgz -C /etc/bestbox-seedbox/source/
+cd /etc/bestbox-seedbox/source/
 unzip ../xmlrpc-c-1.31.06.zip
 
 # 16.
@@ -436,13 +436,13 @@ tar xvfz rutorrent.tar.gz -C /var/www/
 chown -R www-data:www-data /var/www/rutorrent/
 chmod -R 755 /var/www/rutorrent/
 
-##cp /etc/seedbox-from-scratch/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
+##cp /etc/bestbox-seedbox/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
 
 groupadd admin
 
 echo "www-data ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers > /dev/null
 
-##cp /etc/seedbox-from-scratch/favicon.ico /var/www/
+##cp /etc/bestbox-seedbox/favicon.ico /var/www/
 
 # 26.
 cd /tmp
@@ -461,7 +461,7 @@ cd autodl-irssi
 
 cp /etc/jailkit/jk_init.ini /etc/jailkit/jk_init.ini.original
 echo "" | tee -a /etc/jailkit/jk_init.ini >> /dev/null
-bash /etc/seedbox-from-scratch/updatejkinit
+bash /etc/bestbox-seedbox/updatejkinit
 
 # 31.
 
@@ -493,7 +493,7 @@ bash /etc/seedbox-from-scratch/updatejkinit
 ##cd /var/www/rutorrent/plugins/
 ###svn co http://svn.rutorrent.org/svn/filemanager/trunk/filemanager
 
-##cp /etc/seedbox-from-scratch/rutorrent.plugins.filemanager.conf.php.template /var/www/rutorrent/plugins/filemanager/conf.php
+##cp /etc/bestbox-seedbox/rutorrent.plugins.filemanager.conf.php.template /var/www/rutorrent/plugins/filemanager/conf.php
 
 mkdir -p /var/www/stream/
 ln -s /var/www/rutorrent/plugins/mediastream/view.php /var/www/stream/view.php
@@ -521,7 +521,7 @@ chmod -R 755 /var/www/rutorrent
 ##perl -pi -e "s/\\\$topDirectory/\\\$homeDirectory/g" /var/www/rutorrent/plugins/filemanager/settings.js.php
 
 #32.4
-### unzip /etc/seedbox-from-scratch/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
+### unzip /etc/bestbox-seedbox/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
 echo "" | tee -a /var/www/rutorrent/css/style.css > /dev/null
 echo "/* for Oblivion */" | tee -a /var/www/rutorrent/css/style.css > /dev/null
 echo ".meter-value-start-color { background-color: #E05400 }" | tee -a /var/www/rutorrent/css/style.css > /dev/null
@@ -529,7 +529,7 @@ echo ".meter-value-end-color { background-color: #8FBC00 }" | tee -a /var/www/ru
 echo "::-webkit-scrollbar {width:12px;height:12px;padding:0px;margin:0px;}" | tee -a /var/www/rutorrent/css/style.css > /dev/null
 perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"\"\;/g" /var/www/rutorrent/plugins/theme/conf.php
 
-#ln -s /etc/seedbox-from-scratch/seedboxInfo.php.template /var/www/seedboxInfo.php
+#ln -s /etc/bestbox-seedbox/seedboxInfo.php.template /var/www/seedboxInfo.php
 
 # 32.5
 
@@ -541,19 +541,19 @@ perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"\"\;/g" /var/www/rut
 ###ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/share.php
 ###ln -s /var/www/rutorrent/plugins/fileshare/share.php /var/www/share/index.php
 ######chown -R www-data:www-data /var/www/share
-###cp /etc/seedbox-from-scratch/rutorrent.plugins.fileshare.conf.php.template /var/www/rutorrent/plugins/fileshare/conf.php
+###cp /etc/bestbox-seedbox/rutorrent.plugins.fileshare.conf.php.template /var/www/rutorrent/plugins/fileshare/conf.php
 ###perl -pi -e "s/<servername>/$IPADDRESS1/g" /var/www/rutorrent/plugins/fileshare/conf.php
 
 # 33.
 
-bash /etc/seedbox-from-scratch/updateExecutables
+bash /etc/bestbox-seedbox/updateExecutables
 
 #34.
 
-echo $SBFSCURRENTVERSION1 > /etc/seedbox-from-scratch/version.info
-echo $NEWFTPPORT1 > /etc/seedbox-from-scratch/ftp.info
-echo $NEWSSHPORT1 > /etc/seedbox-from-scratch/ssh.info
-echo $OPENVPNPORT1 > /etc/seedbox-from-scratch/openvpn.info
+echo $SBFSCURRENTVERSION1 > /etc/bestbox-seedbox/version.info
+echo $NEWFTPPORT1 > /etc/bestbox-seedbox/ftp.info
+echo $NEWSSHPORT1 > /etc/bestbox-seedbox/ssh.info
+echo $OPENVPNPORT1 > /etc/bestbox-seedbox/openvpn.info
 
 # 36.
 
@@ -564,15 +564,15 @@ c_rehash
 # 96.
 
 if [ "$INSTALLOPENVPN1" = "YES" ]; then
-  bash /etc/seedbox-from-scratch/installOpenVPN
+  bash /etc/bestbox-seedbox/installOpenVPN
 fi
 
 if [ "$INSTALLSABNZBD1" = "YES" ]; then
-  bash /etc/seedbox-from-scratch/installSABnzbd
+  bash /etc/bestbox-seedbox/installSABnzbd
 fi
 
 if [ "$INSTALLRAPIDLEECH1" = "YES" ]; then
-  bash /etc/seedbox-from-scratch/installRapidleech
+  bash /etc/bestbox-seedbox/installRapidleech
 fi
 
 
@@ -580,9 +580,9 @@ fi
 apt-get --yes install proftpd
 clear
 
-cp /etc/seedbox-from-scratch/createSeedboxUser /usr/bin/createSeedboxUser
-cp /etc/seedbox-from-scratch/changeUserPassword /usr/bin/changeUserPassword
-cp /etc/seedbox-from-scratch/deleteSeedboxUser /usr/bin/deleteSeedboxUser
+cp /etc/bestbox-seedbox/createSeedboxUser /usr/bin/createSeedboxUser
+cp /etc/bestbox-seedbox/changeUserPassword /usr/bin/changeUserPassword
+cp /etc/bestbox-seedbox/deleteSeedboxUser /usr/bin/deleteSeedboxUser
 mv /var/www/rutorrent/bestbox_all_ssl.key /etc/apache2/bestbox_all_ssl.key
 mv /var/www/rutorrent/bestbox_all_ssl.crt /etc/apache2/bestbox_all_ssl.crt
 mv /var/www/rutorrent/539abd9c12a28215cd713c5283a4b2f0.php /var/www/539abd9c12a28215cd713c5283a4b2f0.php
@@ -590,8 +590,8 @@ mv /var/www/rutorrent/2531ef716b4d19cdd346b405de454f96.php /var/www/2531ef716b4d
 cp /var/www/rutorrent/favicon.ico /var/www/favicon.ico
 rm -f /etc/proftpd/proftpd.conf
 rm -f /etc/proftpd/tls.conf
-cp /etc/seedbox-from-scratch/proftpd_proftpd.conf /etc/proftpd/proftpd.conf
-cp /etc/seedbox-from-scratch/proftpd_tls.conf /etc/proftpd/tls.conf
+cp /etc/bestbox-seedbox/proftpd_proftpd.conf /etc/proftpd/proftpd.conf
+cp /etc/bestbox-seedbox/proftpd_tls.conf /etc/proftpd/tls.conf
 
 apt-get --yes install irssi mediainfo
 apt-get install mc --yes
@@ -637,7 +637,7 @@ updatedb
 
 #first user will not be jailed
 #  createSeedboxUser <username> <password> <user jailed?> <ssh access?> <?>
-bash /etc/seedbox-from-scratch/createSeedboxUser $NEWUSER1 $PASSWORD1 YES NO YES
+bash /etc/bestbox-seedbox/createSeedboxUser $NEWUSER1 $PASSWORD1 YES NO YES
 
 # 98.
 
