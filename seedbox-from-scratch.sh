@@ -690,10 +690,8 @@ echo "session required pam_limits.so" | tee -a /etc/pam.d/common-session* > /dev
 echo "session required pam_limits.so" | tee -a /etc/pam.d/common-session > /dev/null
 clear
 
-
-
-
-
+bldgrn='\e[1;32m' # Green
+txtrst='\e[0m'    # Text Reset
 
 echo -e "${bldgrn}#${txtrst}"
 echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
