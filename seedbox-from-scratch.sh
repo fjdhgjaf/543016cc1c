@@ -698,6 +698,10 @@ updatedb
 #  createSeedboxUser <username> <password> <user jailed?> <ssh access?> <?>
 sudo createSeedboxUser $NEWUSER1 $PASSWORD1 YES NO YES
 
+perl -pi -e "s/USERHASSSHACCESS1=YES/USERHASSSHACCESS1=NO/g" /usr/bin/createSeedboxUser
+perl -pi -e "s/USERINSUDOERS1=YES/USERINSUDOERS1=NO/g" /usr/bin/createSeedboxUser
+
+
 # 98.
 
 clear
