@@ -10,7 +10,7 @@
 # |--------------------------------------------------------------|
 #
 #
-  SBFSCURRENTVERSION1=0.2
+  SBFSCURRENTVERSION1=0.2  
   OS1=$(lsb_release -si)
 txtblk='\e[0;30m' # Black - Regular
 txtred1='\e[0;31m' # Red
@@ -44,20 +44,15 @@ function getString
 
   while [ ! $NEWVAR1 = $NEWVAR2 ] || [ -z "$NEWVAR1" ];
   do
-    clear
-    echo -e "${txtylw}#${txtrst}"
-	echo -e "${txtylw}# |--------------------------------------------------------------|${txtrst}"
-	echo -e "${txtylw}# | The script thank you for Notos (notos.korsan@gmail.com)      |${txtrst}"
-	echo -e "${txtylw}# |--------------------------------------------------------------|${txtrst}"
-	echo -e "${txtylw}# | The script was further developed Tiby08 (tiby0108@gmail.com) |${txtrst}"
-	echo -e "${txtylw}# |--------------------------------------------------------------|${txtrst}"
-    echo -e "${txtylw}#${txtrst}"
-    echo
 
     if [ "$ISPASSWORD" == "YES" ]; then
-      read -s -p "$DEFAULT" -p "$LABEL" NEWVAR1
+      echo -e -n "${bldgrn}$LABEL${bldpur}"
+      read -s -p "$DEFAULT" -p "" NEWVAR1
+      echo -e "${txtrst}"
     else
-      read -e -i "$DEFAULT" -p "$LABEL" NEWVAR1
+      echo -e -n "${bldgrn}$LABEL${bldpur}"
+      read -e -i "$DEFAULT" -p "" NEWVAR1
+      echo -e -n "${txtrst}"
     fi
     if [ -z "$NEWVAR1" ]; then
       NEWVAR1=a
@@ -82,10 +77,13 @@ function getString
       NEWVAR2=$NEWVAR1
     else
       if [ "$ISPASSWORD" == "YES" ]; then
-        echo
-        read -s -p "Retype: " NEWVAR2
+         echo -e -n "${bldgrn}Please again: ${bldpur}"
+        read NEWVAR2
+         echo -e "${txtrst}"
       else
-        read -p "Retype: " NEWVAR2
+         echo -e -n "${bldgrn}Please again: ${bldpur}"
+        read NEWVAR2
+         echo -e -n "${txtrst}"
       fi
       if [ -z "$NEWVAR2" ]; then
         NEWVAR2=b
@@ -107,15 +105,24 @@ function getString
         fi
       fi
     fi
-    echo "---> $NEWVAR2"
+   ## echo "---> $NEWVAR2"
 
   done
   eval $RETURN=\$NEWVAR1
 }
 # 0.
-
+echo -e -n "${txtrst}"
 if [[ $EUID -ne 0 ]]; then
-  echo "This script must be run as root" 1>&2
+  clear
+  echo -e "${bldgrn}#${txtrst}"
+  echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
+  echo -e "${bldgrn}# | The script thank you for Notos (notos.korsan@gmail.com)      |${txtrst}"
+  echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
+  echo -e "${bldgrn}# | The script was further developed Tiby08 (tiby0108@gmail.com) |${txtrst}"
+  echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
+  echo -e "${bldgrn}#${txtrst}"
+  echo
+  echo -e "${bldred}This script must be run as root${txtrst}" 1>&2
   exit 1
 fi
 
@@ -132,6 +139,17 @@ CHROOTJAIL1=NO
 #those passwords will be changed in the next steps
 PASSWORD1=a
 PASSWORD2=b
+
+
+clear
+echo -e "${bldgrn}#${txtrst}"
+echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
+echo -e "${bldgrn}# | The script thank you for Notos (notos.korsan@gmail.com)      |${txtrst}"
+echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
+echo -e "${bldgrn}# | The script was further developed Tiby08 (tiby0108@gmail.com) |${txtrst}"
+echo -e "${bldgrn}# |--------------------------------------------------------------|${txtrst}"
+echo -e "${bldgrn}#${txtrst}"
+echo
 
 getString NO  "SeedBox felhasználónév: " NEWUSER1
 getString YES "SeedBox felhasználó($NEWUSER1) jelszava: " PASSWORD1
