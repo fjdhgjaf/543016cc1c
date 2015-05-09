@@ -381,6 +381,8 @@ echo "Timeout 30" | tee -a /etc/apache2/apache2.conf > /dev/null
 apt-get --yes install libapache2-mod-scgi
 a2enmod scgi
 
+cd /etc/apache2/
+wget -N http://www.startssl.com/certs/sub.class2.server.ca.pem
 service apache2 restart
 
 echo "$IPADDRESS1" > /etc/seedbox-from-scratch/hostname.info
