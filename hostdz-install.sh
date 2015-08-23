@@ -132,7 +132,7 @@ clear
 getString NO  "SeedBox username:" NEWUSER1 $1
 getString NO "SeedBox user($NEWUSER1) password:" PASSWORD1 $2
 getString NO  "IP or host:" IPADDRESS1 $IPADDRESS1
-getString NO  "The server SSD?(YES/NO)" SSD1 $4
+getString NO  "The server SSD?(YES/NO)" SSD1 $3
 #getString NO  "SSH port: " NEWSSHPORT1 22
 #getString NO  "vsftp port (alap 21): " NEWFTPPORT1 21
 #getString NO  "Do you want to have some of your users in a chroot jail? " CHROOTJAIL1 YES
