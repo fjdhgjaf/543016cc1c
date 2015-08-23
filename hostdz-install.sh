@@ -403,8 +403,8 @@ a2ensite default-ssl
 
 cd /var/www/
 rm -f -r rutorrent
-svn checkout https://github.com/Novik/ruTorrent/trunk rutorrent
-cp /etc/hostdz/action.php.template /var/www/rutorrent/plugins/diskspace/action.php
+wget -N http://bestbox.be/motor/konfig/rutorrent.tar.gz --no-check-certificate
+tar xvfz rutorrent.tar.gz -C /var/www/
 
 chown -R www-data:www-data /var/www/rutorrent/
 chmod -R 755 /var/www/rutorrent/
