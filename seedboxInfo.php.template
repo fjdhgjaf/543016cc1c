@@ -6,7 +6,7 @@
 <?php
   error_reporting(E_ALL);
 
-  $dir = '/etc/seedbox-from-scratch/users/';
+  $dir = '/etc/hostdz/users/';
   $files = scandir($dir);
 
   foreach($files as $index=>$file) {
@@ -43,7 +43,7 @@
   }
 
   function getScriptVersion() {
-    $data = file("/etc/seedbox-from-scratch/version.info");
+    $data = file("/etc/hostdz/version.info");
     return $data[0];
   }
 ?>

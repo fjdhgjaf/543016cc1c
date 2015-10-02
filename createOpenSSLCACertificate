@@ -12,35 +12,35 @@
 #
 #
 
-cd /etc/seedbox-from-scratch/
-rm -r /etc/seedbox-from-scratch/ssl/CA
-mkdir -p /etc/seedbox-from-scratch/ssl/CA/newcerts
-mkdir -p /etc/seedbox-from-scratch/ssl/CA/private
-cd /etc/seedbox-from-scratch/ssl/CA
+cd /etc/hostdz/
+rm -r /etc/hostdz/ssl/CA
+mkdir -p /etc/hostdz/ssl/CA/newcerts
+mkdir -p /etc/hostdz/ssl/CA/private
+cd /etc/hostdz/ssl/CA
 
 echo '01' > serial  && touch index.txt
-cp /etc/seedbox-from-scratch/root.ca.cacert.conf.template /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
-perl -pi -e "s/<username>/$NEWUSER1/g" /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
-perl -pi -e "s/<servername>/$IPADDRESS1/g" /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
+cp /etc/hostdz/root.ca.cacert.conf.template /etc/hostdz/ssl/CA/caconfig.cnf
+perl -pi -e "s/<username>/$NEWUSER1/g" /etc/hostdz/ssl/CA/caconfig.cnf
+perl -pi -e "s/<servername>/$IPADDRESS1/g" /etc/hostdz/ssl/CA/caconfig.cnf
 
-openssl req -new -x509 -extensions v3_ca -keyout private/cakey.pem -passout pass:$CERTPASS1 -out cacert.pem -days 3650 -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
-openssl req -new -nodes -out /etc/seedbox-from-scratch/ssl/CA/req.pem -passout pass:$CERTPASS1 -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf
-openssl ca -batch -out /etc/seedbox-from-scratch/ssl/CA/cert.pem -config /etc/seedbox-from-scratch/ssl/CA/caconfig.cnf -passin pass:$CERTPASS1 -infiles /etc/seedbox-from-scratch/ssl/CA/req.pem
-mv /etc/seedbox-from-scratch/ssl/CA/cert.pem /etc/seedbox-from-scratch/ssl/CA/tmp.pem
-openssl x509 -in /etc/seedbox-from-scratch/ssl/CA/tmp.pem -out /etc/seedbox-from-scratch/ssl/CA/cert.pem
-cat /etc/seedbox-from-scratch/ssl/CA/key.pem /etc/seedbox-from-scratch/ssl/CA/cert.pem > /etc/seedbox-from-scratch/ssl/CA/key-cert.pem
+openssl req -new -x509 -extensions v3_ca -keyout private/cakey.pem -passout pass:$CERTPASS1 -out cacert.pem -days 3650 -config /etc/hostdz/ssl/CA/caconfig.cnf
+openssl req -new -nodes -out /etc/hostdz/ssl/CA/req.pem -passout pass:$CERTPASS1 -config /etc/hostdz/ssl/CA/caconfig.cnf
+openssl ca -batch -out /etc/hostdz/ssl/CA/cert.pem -config /etc/hostdz/ssl/CA/caconfig.cnf -passin pass:$CERTPASS1 -infiles /etc/hostdz/ssl/CA/req.pem
+mv /etc/hostdz/ssl/CA/cert.pem /etc/hostdz/ssl/CA/tmp.pem
+openssl x509 -in /etc/hostdz/ssl/CA/tmp.pem -out /etc/hostdz/ssl/CA/cert.pem
+cat /etc/hostdz/ssl/CA/key.pem /etc/hostdz/ssl/CA/cert.pem > /etc/hostdz/ssl/CA/key-cert.pem
 
-cp /etc/seedbox-from-scratch/ssl/CA/cacert.pem /etc/seedbox-from-scratch/ssl
-cp /etc/seedbox-from-scratch/ssl/CA/cert.pem /etc/seedbox-from-scratch/ssl
-cp /etc/seedbox-from-scratch/ssl/CA/key-cert.pem /etc/seedbox-from-scratch/ssl
-cp /etc/seedbox-from-scratch/ssl/CA/key.pem /etc/seedbox-from-scratch/ssl
-cp /etc/seedbox-from-scratch/ssl/CA/private/cakey.pem /etc/seedbox-from-scratch/ssl
-cp /etc/seedbox-from-scratch/ssl/CA/req.pem /etc/seedbox-from-scratch/ssl
+cp /etc/hostdz/ssl/CA/cacert.pem /etc/hostdz/ssl
+cp /etc/hostdz/ssl/CA/cert.pem /etc/hostdz/ssl
+cp /etc/hostdz/ssl/CA/key-cert.pem /etc/hostdz/ssl
+cp /etc/hostdz/ssl/CA/key.pem /etc/hostdz/ssl
+cp /etc/hostdz/ssl/CA/private/cakey.pem /etc/hostdz/ssl
+cp /etc/hostdz/ssl/CA/req.pem /etc/hostdz/ssl
 
-bash /etc/seedbox-from-scratch/createOpenSSLServiceCertificate sabnzbd
+bash /etc/hostdz/createOpenSSLServiceCertificate sabnzbd
 
-chmod 600 /etc/seedbox-from-scratch/ssl/*
-chmod 644 /etc/seedbox-from-scratch/ssl/cert.pem
-chmod 644 /etc/seedbox-from-scratch/ssl/key.pem
+chmod 600 /etc/hostdz/ssl/*
+chmod 644 /etc/hostdz/ssl/cert.pem
+chmod 644 /etc/hostdz/ssl/key.pem
 
 ##################### LAST LINE ###########

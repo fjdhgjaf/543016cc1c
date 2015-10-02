@@ -1,4 +1,4 @@
-BestBox SeedBox install script
+BestBox seedbox install script
 ==========
-Coded: Tiby08 (tiby0108@gmail.com)
--
+Installation
+--------------

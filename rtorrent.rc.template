@@ -76,11 +76,11 @@ download_rate = 0
 # max mapped memory 
 # nb does not refer to physical memory 
 # max_memory_usage = 3500M 
-pieces.memory.max.set = 3500M 
+pieces.memory.max.set = 4G 
  
 # max number of files to keep open simultaneously 
 # max_open_files = 192 
-network.max_open_files.set = 20
+network.max_open_files.set = 60
  
 # max_open_http = 32 
 network.http.max_open.set = 32
@@ -95,7 +95,8 @@ network.http.max_open.set = 32
 # 
 # dht.mode.set = disable
 dht = disable 
- 
+dht_port = 6881
+
 # UDP port to use for DHT. 
 # 
 # dht_port = 6881 
@@ -123,7 +124,7 @@ schedule = watch_directory,5,5,load_start=/home/<username>/downloads/watch/*.tor
 schedule = untied_directory,5,5,stop_untied= 
  
 # close torrents when diskspace is low. */ 
-schedule = low_diskspace,5,60,close_low_diskspace=100M 
+schedule = low_diskspace,5,60,close_low_diskspace=1G 
  
 # stop torrents when reaching upload ratio in percent,
 # when also reaching total upload in bytes, or when
@@ -205,8 +206,8 @@ pieces.preload.type.set = 0
 ###pieces.preload.type.set szerk 1-ről 0
 pieces.preload.min_size.set = 262144
 pieces.preload.min_rate.set = 5120
-network.send_buffer.size.set = 0
-network.receive_buffer.size.set = 0
+network.send_buffer.size.set = 4M
+network.receive_buffer.size.set = 4M
 
 pieces.sync.always_safe.set = no
 pieces.sync.timeout.set = 600
@@ -225,7 +226,7 @@ system.file.split_suffix.set = .part
 
 # set whether the client should try to connect to UDP trackers
 # use_udp_trackers = yes
-trackers.use_udp.set = no
+#trackers.use_udp.set = no
 use_udp_trackers = yes
 
 # use a http proxy. [url] ;an empty string disables this setting
@@ -273,5 +274,8 @@ trackers.enable = 1
 system.file.allocate.set = yes
 network.tos.set = throughput
 trackers.numwant.set = 400
+# Disable SSL verification
+network.http.ssl_verify_peer.set=0
+system.file_allocate.set = yes
 
 execute = {sh,-c,/usr/bin/php /var/www/rutorrent/php/initplugins.php <username> &}

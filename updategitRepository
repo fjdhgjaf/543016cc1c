@@ -10,9 +10,9 @@
 # |--------------------------------------------------------------|
 #
                         
-cd /etc/seedbox-from-scratch/
+cd /etc/hostdz/
 sudo git stash
 sudo git pull
-sudo bash /etc/seedbox-from-scratch/updateExecutables
+sudo bash /etc/hostdz/updateExecutables
 
 ##################### LAST LINE ###########

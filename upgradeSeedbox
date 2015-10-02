@@ -15,10 +15,10 @@ fi
 
 TSFSV=$1
 
-cd /etc/seedbox-from-scratch/
+cd /etc/hostdz/
 sudo git fetch --all
 sudo git stash
 sudo git checkout -b $TSFSV origin/$TSFSV
 sudo git pull
 
-sudo bash /etc/seedbox-from-scratch/updateExecutables
+sudo bash /etc/hostdz/updateExecutables
